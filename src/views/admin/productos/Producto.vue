@@ -17,6 +17,8 @@
       paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
       :rowsPerPageOptions="[3, 10, 20]"
       currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} productos">
+
+
       <template #header>
         <div class="flex align-items-center justify-content-between">
           <h4 class="m-0">Gestión Productos</h4>
@@ -299,10 +301,6 @@ const guardarImagen = async () => {
     });
   }
 };
-
-
-
-
 
 
 

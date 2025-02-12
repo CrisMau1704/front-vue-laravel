@@ -1,8 +1,10 @@
 import { Api } from "./Api.services";
 
 export default {
-    listarUsuarios() {
-        return Api().get("/usuario");
+
+     // Paginación
+     index(page = 1, limit = 10, q = "") {
+        return Api().get(`/usuario?page=${page}&limit=${limit}&q=${q}`);
     },
     
 
