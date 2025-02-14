@@ -7,6 +7,8 @@ import Producto from '../views/admin/productos/Producto.vue'
 
 import AppLayout from "@/layout/AppLayout.vue"
 import NotFound from '../views/errors/NotFound.vue';
+import NuevoPedido from '../views/admin/pedido/NuevoPedido.vue'
+import ListaPedido from '../views/admin/pedido/ListaPedido.vue'
 
 
 
@@ -55,6 +57,20 @@ const router = createRouter({
           component: Producto,
           meta:{requiereAuth: true}
         },
+        {
+          path: 'pedido/Nuevo',
+          name: 'NuevoPedido',
+          component: NuevoPedido,
+          meta:{requiereAuth: true}
+        },
+        {
+          path: 'pedido',
+          name: 'Pedidos',
+          component: ListaPedido,
+          meta:{requiereAuth: true}
+        },
+
+
 
 
       ]
