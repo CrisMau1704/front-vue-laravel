@@ -8,19 +8,19 @@ export default {
     },
     
     //store
-    guardarUsuario(datos) {  // Añade datos como parámetro aquí
+    store(datos) {  // Añade datos como parámetro aquí
         return Api().post("/cliente", datos);
     },
     //show
-    mostrarUsuario(id) {
+    show(id) {
         return Api().get("/cliente/" + id);
     },
     //update
-    modificarUsuario(id, datos) {  // Añade datos como parámetro aquí
+    update(id, datos) {  // Añade datos como parámetro aquí
         return Api().put("/cliente/" + id, datos);
     },
     //destroy
-    eliminarUsuario(id) {
+    destroy(id) {
         return Api().delete("/cliente/" + id);
     },
 
