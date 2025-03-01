@@ -70,7 +70,7 @@ const onSalir = () =>{
     <div class="layout-topbar">
         <router-link to="/" class="layout-topbar-logo">
             <img :src="logoUrl" alt="logo" />
-            <span>SAKAI</span>
+            <span>Digital File</span>
         </router-link>
 
         <button class="p-link layout-menu-button layout-topbar-button" @click="onMenuToggle()">
@@ -98,4 +98,29 @@ const onSalir = () =>{
     </div>
 </template>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+/* Cambiar color del topbar */
+.layout-topbar {
+    background-color: #2c3e50 !important; /* Color de fondo */
+    color: white !important; /* Color del texto */
+    display: flex;
+    align-items: center;
+    padding: 10px 20px;
+}
+
+/* Cambiar color del logo */
+.layout-topbar-logo {
+    display: flex;
+    align-items: center;
+    color: white !important;
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+
+
+/* Cambiar color del botón "Salir" */
+.layout-topbar-menu .layout-topbar-button:last-child {
+    color: red !important;
+}
+</style>
+

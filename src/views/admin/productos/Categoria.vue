@@ -5,9 +5,9 @@
         <Button label="Nuevo" icon="pi pi-plus" severity="success" class="mr-2" @click="abrirNuevoCategoria" />
       </template>
       <template #end>
-        <FileUpload mode="basic" accept="image/*" :maxFileSize="1000000" label="Importar" chooseLabel="Import"
-          class="mr-2 inline-block" />
-        <Button label="Exportar" icon="pi pi-upload" severity="help" @click="exportCSV($event)" />
+        <Button label="Exportar PDF" icon="pi pi-upload" severity="danger" @click="exportPDF"
+          style="margin-right: 10px;" />
+        <Button label="Exportar CSV" icon="pi pi-upload" severity="help" @click="exportCSV" />
       </template>
     </Toolbar>
 
@@ -87,12 +87,17 @@
 import categoriaService from '../../../services/categoria.service';
 import { ref, onMounted } from 'vue';
 import Toast from 'primevue/toast'; // Importa el componente Toast
+import { nextTick } from 'vue';
+import jsPDF from 'jspdf';
+import autoTable from 'jspdf-autotable';
 
 const categorias = ref([]);
 const categoria = ref({
   nombre: "",
   detalle: ""
 });
+
+const dt = ref(null); 
 
 const totalRecords = ref(0);
 const rows = ref(10); // Número de filas por página
@@ -186,6 +191,34 @@ const editCategoria = (selectedCategoria) => {
   CategoriaDialog.value = true;  // Corregido para usar la variable correcta
 };
 
+const exportCSV = () => {
+  nextTick(() => {
+    if (dt.value) {
+      dt.value.exportCSV();
+    } else {
+      console.error('El DataTable no está disponible');
+    }
+  });
+};
+const exportPDF = () => {
+  const doc = new jsPDF();
 
+  doc.text('Lista de Categorias', 14, 10);
+
+  const columns = ['ID', 'Nombre', 'Detalle'];
+  const rows = categorias.value.map(categoria => [
+  categoria.id,
+  categoria.nombre,
+  categoria.detalle
+  ]);
+
+  autoTable(doc, {
+    startY: 20,
+    head: [columns],
+    body: rows,
+  });
+
+  doc.save('lista_productos.pdf');
+};
 
 </script>

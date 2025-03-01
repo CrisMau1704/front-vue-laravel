@@ -139,7 +139,7 @@
 <script setup>
 
 import clienteService from '../../../services/cliente.service';
-import pedidoService from '../../../services/pedidos.service';
+import pedidoService from '../../../services/pedido.service';
 import productoService from '../../../services/producto.service';
 import Toast from 'primevue/toast';
 import { ref, onMounted } from 'vue';

@@ -19,15 +19,15 @@ const model = ref([
     {
         label: 'Usuarios',
         items: [
-            { label: 'Usuarios', icon: 'pi pi-fw pi-eye', to: '/admin/usuario', badge: 'NEW' },
-            { label: 'Clientes', icon: 'pi pi-fw pi-globe', to: '/admin/cliente', target: '_blank' }
+            { label: 'Usuarios', icon: 'pi pi-fw pi-user', to: '/admin/usuario', badge: 'NEW' },
+            { label: 'Clientes', icon: 'pi pi-fw pi-user-plus', to: '/admin/cliente', target: '_blank' }
         ]
     },
     {
         label: 'Gestion Pedidos',
         items: [
-            { label: 'Lista pedidos', icon: 'pi pi-fw pi-prime', to: '/admin/pedido' },
-            { label: 'Nuevo pedido', icon: 'pi pi-fw pi-prime', to: '/admin/pedido/nuevo' },
+            { label: 'Lista pedidos', icon: 'pi pi-fw pi-list', to: '/admin/pedido' },
+            { label: 'Nuevo pedido', icon: 'pi pi-fw pi-plus', to: '/admin/pedido/nuevo' },
         ]
     },
     {

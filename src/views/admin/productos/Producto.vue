@@ -3,12 +3,13 @@
     <Toolbar class="mb-4">
       <template #start>
         <Button label="Nuevo" icon="pi pi-plus" severity="success" class="mr-2" @click="abrirNuevoProducto" />
-        <Button label="Eliminar" icon="pi pi-trash" severity="danger" />
       </template>
       <template #end>
-        <FileUpload mode="basic" accept="image/*,application/pdf" :maxFileSize="1000000" label="Importar"
-          chooseLabel="Import" class="mr-2 inline-block" />
-        <Button label="Exportar" icon="pi pi-upload" severity="help" @click="exportCSV" />
+        <Button label="Exportar PDF" icon="pi pi-upload" severity="danger" @click="exportPDF"
+          style="margin-right: 10px;" />
+        <Button label="Exportar CSV" icon="pi pi-upload" severity="help" @click="exportCSV" />
+
+
       </template>
     </Toolbar>
 
@@ -16,7 +17,7 @@
       :paginator="true" :rows="rows" @page="onPage"
       paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
       :rowsPerPageOptions="[3, 10, 20]"
-      currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} productos">
+      currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} productos" :exportable="true">
 
 
       <template #header>
@@ -133,6 +134,10 @@
 import productoService from '../../../services/producto.service';
 import categoriaService from '../../../services/categoria.service';
 import Toast from 'primevue/toast';
+import jsPDF from 'jspdf';
+import autoTable from 'jspdf-autotable';
+
+import { nextTick } from 'vue';
 
 import { ref, onMounted } from 'vue';
 
@@ -153,6 +158,10 @@ const producto = ref({
   imagen: null,
 });
 const fileUploadRef = ref(null);
+
+
+
+const dt = ref(null);
 
 const toast = ref(null);
 
@@ -200,8 +209,15 @@ const formatCurrency = (value) => {
 };
 
 const exportCSV = () => {
-  dt.value.exportCSV();
+  nextTick(() => {
+    if (dt.value) {
+      dt.value.exportCSV();
+    } else {
+      console.error('El DataTable no está disponible');
+    }
+  });
 };
+
 
 const abrirNuevoProducto = () => {
   producto.value = { estado: true, categoria_id: null, precio: null, imagen: null };
@@ -354,8 +370,28 @@ const confirmDeleteProduct = (prod) => {
 const hideDeleteDialog = () => {
   deleteDialog.value = false;
 };
-</script>
 
-<style scoped>
-/* Agrega estilos específicos de esta página si los necesitas */
-</style>
+
+const exportPDF = () => {
+  const doc = new jsPDF();
+
+  doc.text('Lista de Productos', 14, 10);
+
+  const columns = ['ID', 'Nombre', 'Stock', 'Precio', 'Categoría'];
+  const rows = productos.value.map(prod => [
+    prod.id,
+    prod.nombre,
+    prod.stock,
+    prod.precio,
+    prod.categoria?.nombre || 'Sin categoría'
+  ]);
+
+  autoTable(doc, {
+    startY: 20,
+    head: [columns],
+    body: rows,
+  });
+
+  doc.save('lista_productos.pdf');
+};
+</script>

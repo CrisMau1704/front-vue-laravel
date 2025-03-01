@@ -3,10 +3,10 @@
         <Toolbar class="mb-4">
             <template #start>
                 <Button label="Nuevo" icon="pi pi-plus" severity="success" class="mr-2" @click="abrirDialogoUsuario" />
-             
+
             </template>
             <template #end>
-           
+
                 <Button label="Exportar" icon="pi pi-upload" severity="help" @click="exportCSV" />
             </template>
         </Toolbar>
@@ -41,25 +41,29 @@
         <Toast ref="toast" />
 
         <!-- Dialogo para agregar o editar usuario -->
-        <Dialog v-model:visible="dialogoUsuario" :style="{ width: '450px' }" header="Detalles del Usuario"
-            :modal="true">
-            <div class="field">
-                <label for="name">Nombre</label>
-                <InputText id="name" v-model.trim="usuario.name" required autofocus />
+
+
+        <Dialog v-model:visible="dialogoUsuario" modal header="Editar usuarios" :style="{ width: '25rem' }">
+            
+            <div class="flex align-items-center gap-3 mb-3">
+                <label for="name" class="font-semibold w-6rem">Nombre</label>
+                <InputText id="name" v-model.trim="usuario.name" class="flex-auto" autocomplete="off" />
             </div>
-            <div class="field">
-                <label for="email">Correo</label>
-                <InputText id="email" v-model.trim="usuario.email" required />
+            <div class="flex align-items-center gap-3 mb-5">
+                <label for="email" class="font-semibold w-6rem">Email</label>
+                <InputText id="email" v-model.trim="usuario.email" class="flex-auto" autocomplete="off" />
             </div>
-            <div class="field">
-                <label for="password">Contraseña</label>
+            <div class="flex align-items-center gap-3 mb-5">
+                <label for="password" class="font-semibold w-6rem">Password</label>
                 <Password v-model="usuario.password" toggleMask />
             </div>
 
-            <template #footer>
-                <Button label="Cancelar" icon="pi pi-times" text @click="cerrarDialogo" />
-                <Button label="Guardar" icon="pi pi-check" text @click="guardarUsuario" />
-            </template>
+
+
+            <div class="flex justify-content-end gap-2">
+                <Button type="button" label="Cancel" severity="secondary" text @click="cerrarDialogo"></Button>
+                <Button type="button" label="Save" @click="guardarUsuario"></Button>
+            </div>
         </Dialog>
 
         <!-- Dialogo de confirmación de eliminación -->
@@ -100,25 +104,25 @@ onMounted(() => {
 });
 
 const listarUsuarios = async () => {
-  loading.value = true;
-  const page = lazyParams.value.page + 1;  // Se suma 1 porque el backend suele usar paginación 1-indexada
-  const limit = lazyParams.value.rows;     // Número de filas por página
+    loading.value = true;
+    const page = lazyParams.value.page + 1;  // Se suma 1 porque el backend suele usar paginación 1-indexada
+    const limit = lazyParams.value.rows;     // Número de filas por página
 
-  try {
-    // Llamar al servicio de categorías con la paginación y búsqueda
-    const { data } = await usuarioService.index(page, limit, buscar.value);
+    try {
+        // Llamar al servicio de categorías con la paginación y búsqueda
+        const { data } = await usuarioService.index(page, limit, buscar.value);
 
-    // Asignar directamente los datos a usuarios sin filtrar
-    usuarios.value = data.data;
+        // Asignar directamente los datos a usuarios sin filtrar
+        usuarios.value = data.data;
 
-    // Asignar el total de registros para la paginación
-    totalRecords.value = data.total;
+        // Asignar el total de registros para la paginación
+        totalRecords.value = data.total;
 
-  } catch (error) {
-    console.error("Error al obtener los usuarios:", error);
-  } finally {
-    loading.value = false;
-  }
+    } catch (error) {
+        console.error("Error al obtener los usuarios:", error);
+    } finally {
+        loading.value = false;
+    }
 };
 
 async function guardarUsuario() {
@@ -182,4 +186,3 @@ const exportCSV = () => {
     }
 };
 </script>
-
