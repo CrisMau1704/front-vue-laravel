@@ -11,8 +11,10 @@ const model = ref([
     {
         label: 'Gestion productos',
         items: [
+            { label: 'Categorias', icon: 'pi pi-fw pi-check-square', to: '/admin/categoria' },
             { label: 'Productos', icon: 'pi pi-fw pi-id-card', to: '/admin/producto' },
-            { label: 'Categorias', icon: 'pi pi-fw pi-check-square', to: '/admin/categoria' }
+            { label: 'Proveedores', icon: 'pi pi-fw pi-user-plus', to: '/admin/proveedor' }
+
             
         ]
     },
@@ -24,10 +26,17 @@ const model = ref([
         ]
     },
     {
-        label: 'Gestion Pedidos',
+        label: 'Gestion Ventas',
         items: [
-            { label: 'Lista pedidos', icon: 'pi pi-fw pi-list', to: '/admin/pedido' },
-            { label: 'Nuevo pedido', icon: 'pi pi-fw pi-plus', to: '/admin/pedido/nuevo' },
+            { label: 'Lista ventas', icon: 'pi pi-fw pi-list', to: '/admin/pedido' },
+            { label: 'Nueva Venta', icon: 'pi pi-fw pi-plus', to: '/admin/pedido/nuevo' },
+        ]
+    },
+    {
+        label: 'Gestion Compras',
+        items: [
+            { label: 'Lista de compras', icon: 'pi pi-fw pi-list', to: '/admin/compra' },
+            { label: 'Nueva Compra', icon: 'pi pi-fw pi-plus', to: '/admin/compra/nuevo' },
         ]
     },
     {

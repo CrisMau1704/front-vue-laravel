@@ -10,6 +10,7 @@ import AppLayout from "@/layout/AppLayout.vue"
 import NotFound from '../views/errors/NotFound.vue';
 import NuevoPedido from '../views/admin/pedido/NuevoPedido.vue'
 import ListaPedido from '../views/admin/pedido/ListaPedido.vue'
+import Proveedor from '../views/admin/productos/Proveedor.vue'
 
 
 
@@ -62,6 +63,12 @@ const router = createRouter({
           path: 'producto',
           name: 'producto',
           component: Producto,
+          meta:{requiereAuth: true}
+        },
+        {
+          path: 'proveedor',
+          name: 'proveedor',
+          component: Proveedor,
           meta:{requiereAuth: true}
         },
         {

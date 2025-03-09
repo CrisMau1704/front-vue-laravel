@@ -33,6 +33,14 @@
       <Column field="id" header="ID" sortable style="min-width:12rem"></Column>
       <Column field="nombre" header="NOMBRE" sortable style="min-width:16rem"></Column>
       <Column field="stock" header="STOCK" sortable style="min-width:16rem"></Column>
+      <Column field="stock" header="Status" sortable style="min-width:12rem">
+        <template #body="slotProps">
+          <Tag :value="getStockStatus(slotProps.data.stock)" :severity="getStockSeverity(slotProps.data.stock)" />
+        </template>
+      </Column>
+
+
+
       <Column header="Imagen">
         <template #body="slotProps">
           <img :src="`http://127.0.0.1:8000/storage/${slotProps.data.imagen}`" alt="Imagen"
@@ -49,9 +57,9 @@
 
       <Column :exportable="false" style="min-width:8rem">
         <template #body="slotProps">
-          <Button icon="pi pi-image" outlined rounded class="mr-2" @click="changeImage(slotProps.data)" />
-          <Button icon="pi pi-pencil" outlined rounded class="mr-2" @click="editProduct(slotProps.data)" />
-          <Button icon="pi pi-trash" outlined rounded severity="danger" @click="confirmDeleteProduct(slotProps.data)" />
+          <Button icon="pi pi-image" rounded severity="success" class="mr-2" @click="changeImage(slotProps.data)" />
+          <Button icon="pi pi-pencil" rounded class="mr-2" @click="editProduct(slotProps.data)" />
+          <Button icon="pi pi-trash" rounded severity="danger" @click="confirmDeleteProduct(slotProps.data)" />
         </template>
       </Column>
     </DataTable>
@@ -168,6 +176,12 @@ const toast = ref(null);
 const categorias = ref([]);
 
 const newImage = ref(null);
+
+const statuses = ref([
+  { label: 'INSTOCK', value: 'instock' },
+  { label: 'LOWSTOCK', value: 'lowstock' },
+  { label: 'OUTOFSTOCK', value: 'outofstock' }
+]);
 
 onMounted(() => {
   getProductos();
@@ -372,6 +386,30 @@ const hideDeleteDialog = () => {
 };
 
 
+const getStockStatus = (stock) => {
+  if (stock === 0) {
+    return 'AGOTADO'; // Si el stock es 0
+  } else if (stock > 0 && stock <= 5) {
+    return 'ESTADO MÍNIMO'; // Si el stock está entre 1 y 5
+  } else if (stock > 5) {
+    return 'EN STOCK'; // Si el stock es mayor a 5
+  }
+  return ''; // En caso de que el stock sea inválido
+};
+
+const getStockSeverity = (stock) => {
+  if (stock === 0) {
+    return 'danger'; // Agotado: color rojo
+  } else if (stock > 0 && stock <= 5) {
+    return 'warning'; // Estado mínimo: color amarillo
+  } else if (stock > 5) {
+    return 'success'; // En stock: color verde
+  }
+  return null; // En caso de stock inválido
+};
+
+
+
 const exportPDF = () => {
   const doc = new jsPDF();
 
@@ -394,4 +432,8 @@ const exportPDF = () => {
 
   doc.save('lista_productos.pdf');
 };
+
+
+
+
 </script>

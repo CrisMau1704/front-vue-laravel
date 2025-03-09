@@ -9,9 +9,9 @@
     <div class="flex align-items-center justify-content-between">
         <h4 class="m-0">Lista Pedidos</h4>
         
-        <!-- Usando PrimeVue Calendar para las fechas -->
+        <!-- Usando PrimeVue Calendar para las fechas 
         <Calendar v-model="fi" showTime @change="getPedidos" placeholder="Seleccionar fecha y hora" style="width: 200px;"/>
-        <Calendar v-model="ff" showTime @change="getPedidos" placeholder="Seleccionar fecha y hora" style="width: 200px;"/>
+        <Calendar v-model="ff" showTime @change="getPedidos" placeholder="Seleccionar fecha y hora" style="width: 200px;"/>-->
 
         <span class="p-input-icon-left">
             <i class="pi pi-search"></i>
@@ -96,7 +96,7 @@ const getPedidos = async () => {
     const limit = lazyParams.value.rows;
 
     try {
-        const { data } = await pedidoService.index(page, limit, buscar.value || '', fi.value || '', ff.value || '');
+        const { data } = await pedidoService.index(page, limit, buscar.value);
         console.log('Datos recibidos:', data); // Verifica la respuesta
         pedidos.value = data.data;
         totalRecords.value = data.total;
@@ -108,7 +108,7 @@ const getPedidos = async () => {
             console.log('No hay pedidos disponibles.');
         }
 
-        dt.value.refresh();  // Forzar actualización si es necesario
+       
     } catch (error) {
         console.error('Error al obtener pedidos:', error);
     } finally {

@@ -255,6 +255,15 @@ const guardarPedido = async () => {
         cliente_seleccionado.value = {};
         observaciones.value = "";  // Resetear observaciones
 
+        // Esperar el tiempo del toast antes de recargar la página
+        setTimeout(async () => {
+            // Recargar los productos después de guardar el pedido (actualizar el stock)
+            await obtenerProductosActualizados();
+
+            // Recargar la página para reflejar todos los cambios en la UI
+            window.location.reload();  // Esto recarga la página
+        }, 3500); // Esperar 3500ms para dar tiempo al toast de desaparecer
+
     } catch (error) {
         // Mostrar un toast de error
         toast.value?.add({
@@ -265,6 +274,20 @@ const guardarPedido = async () => {
         });
     }
 };
+
+
+// Función para obtener los productos actualizados desde el backend
+const obtenerProductosActualizados = async () => {
+    try {
+        // Llamada al servicio para obtener los productos actualizados (por ejemplo, los productos con stock actualizado)
+        const { data } = await productoService.obtenerTodos();  // Reemplaza con tu servicio adecuado
+        // Actualiza el estado de los productos en la interfaz (puedes tener algo como esto en tu app)
+        productos.value = data; // Aquí 'productos' es una variable reactiva que contiene todos los productos
+    } catch (error) {
+        console.error("Error al obtener productos actualizados:", error);
+    }
+};
+
 
 
 const guardarCliente = async () => {

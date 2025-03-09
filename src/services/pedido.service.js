@@ -4,7 +4,7 @@ export default {
 
      // Paginación
     index(page = 1, limit = 10, q = "", fi="" ,ff="") {
-        return Api().get(`/pedido?page=${page}&limit=${limit}&q=${q}&fi=${fi}&ff=${ff}`);
+        return Api().get(`/pedido?page=${page}&limit=${limit}&q=${q}`);
     },
     
     //store

@@ -32,7 +32,8 @@
 
       <Column :exportable="false" style="min-width:8rem">
         <template #body="slotProps">
-          <Button icon="pi pi-pencil" outlined rounded class="mr-2" @click="editCategoria(slotProps.data)" />
+          <Button icon="pi pi-pencil"  rounded class="mr-2" @click="editCategoria(slotProps.data)" />
+          <Button icon="pi pi-trash"  rounded severity="danger" @click="confirmDeleteCategoria(slotProps.data)" />
          
         </template>
       </Column>
@@ -80,8 +81,19 @@
         <Button label="Cancelar" icon="pi pi-times" text @click="hideDialog" />
       </template>
     </Dialog>
+
+     <!-- Dialog para eliminar producto -->
+  <Dialog v-model:visible="deleteDialog" :style="{ width: '450px' }" header="Confirmar" :modal="true" class="p-fluid">
+      <p>¿Estás seguro de que deseas eliminar esta categoria?</p>
+      <template #footer>
+        <Button label="No" icon="pi pi-times" text @click="hideDeleteDialog" />
+        <Button label="Sí" icon="pi pi-check" text severity="danger" @click="deleteProduct" />
+      </template>
+    </Dialog>
   </div>
 </template>
+
+
 
 <script setup>
 import categoriaService from '../../../services/categoria.service';
@@ -108,6 +120,8 @@ const buscar = ref("");
 const visible = ref(false);
 const submitted = ref(false);
 const CategoriaDialog = ref(false);
+const deleteDialog = ref(false);
+const CategoriaSeleccionado = ref(null); // Para almacenar el proveedor a eliminar
 
 // Referencia al componente Toast
 const toast = ref(null);
@@ -117,25 +131,25 @@ onMounted(() => {
 });
 
 const getListaCategorias = async () => {
-  loading.value = true;
-  const page = lazyParams.value.page + 1;  // Se suma 1 porque el backend suele usar paginación 1-indexada
-  const limit = lazyParams.value.rows;     // Número de filas por página
+    loading.value = true;
+    const page = lazyParams.value.page + 1;  // Se suma 1 porque el backend suele usar paginación 1-indexada
+    const limit = lazyParams.value.rows;     // Número de filas por página
 
-  try {
-    // Llamar al servicio de categorías con la paginación y búsqueda
-    const { data } = await categoriaService.index(page, limit, buscar.value);
+    try {
+        // Llamar al servicio de proveedores con la paginación y búsqueda
+        const { data } = await categoriaService.index(page, limit, buscar.value);
 
-    // Asignar directamente los datos a categorias sin filtrar
-    categorias.value = data.data;
+        // Filtrar los proveedores donde 'estado' es true
+        categorias.value = data.data.filter(categoria => categoria.estado === 1);
 
-    // Asignar el total de registros para la paginación
-    totalRecords.value = data.total;
+        // Asignar el total de registros para la paginación (puedes mantener el total sin filtrar si lo necesitas)
+        totalRecords.value = data.total;
 
-  } catch (error) {
-    console.error("Error al obtener las categorías:", error);
-  } finally {
-    loading.value = false;
-  }
+    } catch (error) {
+        console.error("Error al obtener los proveedores:", error);
+    } finally {
+        loading.value = false;
+    }
 };
 
 async function guardarCategoria() {
@@ -219,6 +233,28 @@ const exportPDF = () => {
   });
 
   doc.save('lista_productos.pdf');
+};
+
+
+function confirmDeleteCategoria(cat) {
+  CategoriaSeleccionado.value = cat;
+  deleteDialog.value = true;
+}
+
+function hideDeleteDialog() {
+  deleteDialog.value = false;
+  CategoriaSeleccionado.value = null;
+}
+
+const deleteProduct = async () => {
+  try {
+    await categoriaService.destroy(CategoriaSeleccionado.value.id);
+    toast.value.add({ severity: 'success', summary: 'Eliminado', detail: 'categoria eliminado correctamente.', life: 3000 });
+    deleteDialog.value = false;
+    await getListaCategorias(); // Recargar lista
+  } catch (error) {
+    toast.value.add({ severity: 'error', summary: 'Error', detail: 'No se pudo eliminar el categoria.', life: 3000 });
+  }
 };
 
 </script>
