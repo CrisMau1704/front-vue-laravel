@@ -5,12 +5,14 @@ import Cliente from '@/views/admin/Cliente.vue'
 import Login from '../views/auth/Login.vue'
 import Categoria from '../views/admin/productos/Categoria.vue'
 import Producto from '../views/admin/productos/Producto.vue'
+import Calendario from '@/views/admin/Calendario.vue'
 
 import AppLayout from "@/layout/AppLayout.vue"
 import NotFound from '../views/errors/NotFound.vue';
 import NuevoPedido from '../views/admin/pedido/NuevoPedido.vue'
 import ListaPedido from '../views/admin/pedido/ListaPedido.vue'
 import Proveedor from '../views/admin/productos/Proveedor.vue'
+
 
 
 
@@ -41,6 +43,12 @@ const router = createRouter({
       path: '/admin',
       component: AppLayout,
       children: [
+        {
+          path: 'calendario',
+          name: 'Calendario',
+          component: Calendario,
+          meta:{requiereAuth: true}
+        },
         {
           path: 'categoria',
           name: 'Categoria',
@@ -83,6 +91,7 @@ const router = createRouter({
           component: ListaPedido,
           meta:{requiereAuth: true}
         },
+       
 
 
 

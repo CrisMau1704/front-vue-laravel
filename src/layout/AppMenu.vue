@@ -6,15 +6,17 @@ import AppMenuItem from './AppMenuItem.vue';
 const model = ref([
     {
         label: 'Inicio',
-        items: [{ label: 'Administrador', icon: 'pi pi-fw pi-home', to: '/admin' }]
+        items: [{ label: 'Administrador', icon: 'pi pi-fw pi-home', to: '/admin' },
+                
+        ]
     },
     {
         label: 'Gestion productos',
         items: [
             { label: 'Categorias', icon: 'pi pi-fw pi-check-square', to: '/admin/categoria' },
             { label: 'Productos', icon: 'pi pi-fw pi-id-card', to: '/admin/producto' },
-            { label: 'Proveedores', icon: 'pi pi-fw pi-user-plus', to: '/admin/proveedor' }
-
+            { label: 'Proveedores', icon: 'pi pi-fw pi-user-plus', to: '/admin/proveedor' },
+            {label: 'Calendario', icon: 'pi pi-fw pi-id-card', to: '/admin/calendario' }
             
         ]
     },

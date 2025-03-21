@@ -31,8 +31,8 @@
             <Column field="email" header="EMAIL" sortable></Column>
             <Column header="ACCIONES">
                 <template #body="slotProps">
-                    <Button icon="pi pi-pencil" outlined rounded class="mr-2" @click="editarUsuario(slotProps.data)" />
-                    <Button icon="pi pi-trash" outlined rounded severity="danger"
+                    <Button icon="pi pi-pencil"  rounded class="mr-2" @click="editarUsuario(slotProps.data)" />
+                    <Button icon="pi pi-trash"  rounded severity="danger"
                         @click="confirmarEliminar(slotProps.data.id)" />
                 </template>
             </Column>

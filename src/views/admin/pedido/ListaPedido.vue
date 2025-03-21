@@ -30,11 +30,11 @@
         </Column>
         <Column field="cliente.nombre_completo" header="Cliente" sortable style="min-width:10rem"></Column>
 
-        <Column :exportable="false" style="min-width:8rem">
+        <Column :exportable="false" style="min-width:8rem" header="Acciones" >
             <template #body="slotProps">
                 <Button icon="pi pi-file-pdf" rounded severity="danger" class="mr-2"
                     @click="exportPDF(slotProps.data)" />
-                <Button icon="pi pi-file-check" rounded severity="warning" class="mr-2"
+                <Button icon="pi pi-search" rounded severity="warning" class="mr-2"
                     @click="abrir(slotProps.data)" />
             </template>
         </Column>

@@ -6,6 +6,8 @@ import { createPinia } from 'pinia'
 import App from './App.vue'
 import router from './router'
 
+import VueCal from 'vue-cal';
+import 'vue-cal/dist/vuecal.css'; 
 
 //prime vue SAKAI
 import 'primevue/resources/themes/saga-blue/theme.css'; // Tema (puedes cambiarlo)
@@ -222,6 +224,6 @@ app.component('TreeSelect', TreeSelect);
 app.component('TreeTable', TreeTable);
 app.component('TriStateCheckbox', TriStateCheckbox);
 app.component('VirtualScroller', VirtualScroller);
-
+app.component('VueCal', VueCal); 
 
 app.mount('#app')

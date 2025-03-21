@@ -57,7 +57,8 @@
 
       <Column :exportable="false" style="min-width:8rem">
         <template #body="slotProps">
-          <Button icon="pi pi-image" rounded severity="success" class="mr-2" @click="changeImage(slotProps.data)" />
+          <Button icon="pi pi-file-pdf" rounded severity="warning" class="mr-2" @click="abrirPDF(slotProps.data)" />
+          
           <Button icon="pi pi-pencil" rounded class="mr-2" @click="editProduct(slotProps.data)" />
           <Button icon="pi pi-trash" rounded severity="danger" @click="confirmDeleteProduct(slotProps.data)" />
         </template>
@@ -135,6 +136,12 @@
         <Button label="Guardar Imagen" icon="pi pi-check" text @click="guardarImagen" />
       </template>
     </Dialog>
+
+    <Dialog v-model:visible="mostrarDialogPDF" modal header="Visor PDF" :style="{ width: '80vw' }">
+      <iframe v-if="pdfURL" :src="pdfURL" width="100%" height="600px" style="border: none;"></iframe>
+    </Dialog>
+
+
   </div>
 </template>
 
@@ -166,22 +173,19 @@ const producto = ref({
   imagen: null,
 });
 const fileUploadRef = ref(null);
-
-
-
 const dt = ref(null);
-
 const toast = ref(null);
-
 const categorias = ref([]);
-
 const newImage = ref(null);
-
 const statuses = ref([
   { label: 'INSTOCK', value: 'instock' },
   { label: 'LOWSTOCK', value: 'lowstock' },
   { label: 'OUTOFSTOCK', value: 'outofstock' }
 ]);
+const mostrarDialogPDF = ref(false);
+const pdfURL = ref(null)
+const productoSeleccionado = ref(null); // Para almacenar el proveedor a eliminar
+
 
 onMounted(() => {
   getProductos();
@@ -272,7 +276,7 @@ const guardarProducto = async () => {
 
     toast.value.add({
       severity: 'success',
-      summary: 'Éxito',
+      summary: 'Éxito', 
       detail: `Producto ${isNew ? 'creado' : 'actualizado'} correctamente`,
       life: 3000,
     });
@@ -335,19 +339,15 @@ const guardarImagen = async () => {
 
 
 
-const changeImage = (prod) => {
-  producto.value = { ...prod };
-  imageDialog.value = true;
-};
-
 const hideImageDialog = () => {
   imageDialog.value = false;
 };
 
 const editProduct = (prod) => {
-  producto.value = { ...prod };
-  productDialog.value = true;
+  producto.value = { ...prod };  // Cargar los datos del producto seleccionado
+  productDialog.value = true;  // Mostrar el diálogo para editar el producto
 };
+
 
 const onPage = (event) => {
   lazyParams.value.page = event.page;
@@ -355,36 +355,28 @@ const onPage = (event) => {
   getProductos();
 };
 
+
+
+function confirmDeleteProduct(prov) {
+  productoSeleccionado.value = prov;
+  deleteDialog.value = true;
+}
+
+function hideDeleteDialog() {
+  deleteDialog.value = false;
+  productoSeleccionado.value = null;
+}
+
 const deleteProduct = async () => {
   try {
-    await productoService.delete(producto.value.id);
-    toast.value.add({
-      severity: 'success',
-      summary: 'Éxito',
-      detail: 'Producto eliminado correctamente',
-      life: 3000,
-    });
-    getProductos();
-    hideDeleteDialog();
+    await productoService.destroy(productoSeleccionado.value.id);
+    toast.value.add({ severity: 'success', summary: 'Eliminado', detail: 'Proveedor eliminado correctamente.', life: 3000 });
+    deleteDialog.value = false;
+    await getProductos(); // Recargar lista
   } catch (error) {
-    toast.value.add({
-      severity: 'error',
-      summary: 'Error',
-      detail: 'No se pudo eliminar el producto',
-      life: 3000,
-    });
+    toast.value.add({ severity: 'error', summary: 'Error', detail: 'No se pudo eliminar el proveedor.', life: 3000 });
   }
 };
-
-const confirmDeleteProduct = (prod) => {
-  producto.value = { ...prod };
-  deleteDialog.value = true;
-};
-
-const hideDeleteDialog = () => {
-  deleteDialog.value = false;
-};
-
 
 const getStockStatus = (stock) => {
   if (stock === 0) {
@@ -432,6 +424,19 @@ const exportPDF = () => {
 
   doc.save('lista_productos.pdf');
 };
+
+const abrirPDF = (data) => {
+  console.log('Data del producto:', data); // Verifica qué contiene 'data'
+  if (data.imagen) {  // Cambia .pdf por .imagen
+    const urlPDF = `http://127.0.0.1:8000/storage/${data.imagen}`;
+    console.log('URL del PDF:', urlPDF);  // Verifica si la URL es correcta
+    pdfURL.value = urlPDF;
+    mostrarDialogPDF.value = true;
+  } else {
+    console.error('No se ha encontrado el PDF asociado al producto.');
+  }
+};
+
 
 
 
