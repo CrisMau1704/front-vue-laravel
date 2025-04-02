@@ -31,7 +31,7 @@
       </template>
 
       <Column field="id" header="ID" sortable style="min-width:12rem"></Column>
-      <Column field="nombre" header="NOMBRE" sortable style="min-width:16rem"></Column>
+      <Column field="nombre" header="PLATO" sortable style="min-width:16rem"></Column>
       <Column field="stock" header="STOCK" sortable style="min-width:16rem"></Column>
       <Column field="stock" header="Status" sortable style="min-width:12rem">
         <template #body="slotProps">
@@ -70,6 +70,15 @@
     <!-- Dialog para edición de producto -->
     <Dialog v-model:visible="productDialog" :style="{ width: '450px' }" header="Detalles Producto" :modal="true"
       class="p-fluid">
+
+      <div class="field">
+        <label for="categoria">Categoría</label>
+        <Dropdown id="categoria" v-model="producto.categoria_id" :options="categorias" optionLabel="nombre"
+          optionValue="id" placeholder="Seleccione una categoría" class="w-full" />
+        <small class="p-error" v-if="submitted && !producto.categoria_id">
+          Categoría es obligatoria.
+        </small>
+      </div>
       <div class="field">
         <label for="name">Nombre</label>
         <InputText id="name" v-model.trim="producto.nombre" required="true" autofocus
@@ -82,14 +91,7 @@
         <Textarea id="description" v-model="producto.descripcion" rows="3" cols="20" />
       </div>
 
-      <div class="field">
-        <label for="categoria">Categoría</label>
-        <Dropdown id="categoria" v-model="producto.categoria_id" :options="categorias" optionLabel="nombre"
-          optionValue="id" placeholder="Seleccione una categoría" class="w-full" />
-        <small class="p-error" v-if="submitted && !producto.categoria_id">
-          Categoría es obligatoria.
-        </small>
-      </div>
+      
 
       <div class="formgrid grid">
         <div class="field col">

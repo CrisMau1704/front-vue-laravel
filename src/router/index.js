@@ -12,6 +12,7 @@ import NotFound from '../views/errors/NotFound.vue';
 import NuevoPedido from '../views/admin/pedido/NuevoPedido.vue'
 import ListaPedido from '../views/admin/pedido/ListaPedido.vue'
 import Proveedor from '../views/admin/productos/Proveedor.vue'
+import NuevaCompra from '../views/admin/compras/NuevaCompra.vue'
 
 
 
@@ -89,6 +90,12 @@ const router = createRouter({
           path: 'pedido',
           name: 'Pedidos',
           component: ListaPedido,
+          meta:{requiereAuth: true}
+        },
+        {
+          path: 'compras/Nuevo',
+          name: 'NuevaCompra',
+          component: NuevaCompra,
           meta:{requiereAuth: true}
         },
        

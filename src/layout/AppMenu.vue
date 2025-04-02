@@ -1,7 +1,10 @@
+
+
 <script setup>
 import { ref } from 'vue';
 
 import AppMenuItem from './AppMenuItem.vue';
+
 
 const model = ref([
     {
@@ -37,8 +40,8 @@ const model = ref([
     {
         label: 'Gestion Compras',
         items: [
-            { label: 'Lista de compras', icon: 'pi pi-fw pi-list', to: '/admin/compra' },
-            { label: 'Nueva Compra', icon: 'pi pi-fw pi-plus', to: '/admin/compra/nuevo' },
+            { label: 'Lista de compras', icon: 'pi pi-fw pi-list', to: '/admin/compras' },
+            { label: 'Nueva Compra', icon: 'pi pi-fw pi-plus', to: '/admin/compras/nuevo' },
         ]
     },
     {
